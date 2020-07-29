@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Hero } from '../hero';
 import { HeroService } from '../hero.service';
+import { MessageService } from '../message.service';
 
 @Component({
   selector: 'app-heroes', // css element selector
@@ -24,7 +25,7 @@ export class HeroesComponent implements OnInit {
   Reserve the constructor for simple initialization such as wiring constructor parameters to properties. 
   The constructor shouldn't do anything.  
   */
-  constructor(private heroService: HeroService) { }
+  constructor(private heroService: HeroService, private messageService: MessageService) { }
 
   // lifecycle hook: called shortly after creating a component. good place for initialization.
   // will execute body at an appropriate time after the HeroesComponent instance is created
@@ -34,6 +35,7 @@ export class HeroesComponent implements OnInit {
 
   onSelect(hero: Hero): void {
     this.selectedHero = hero;
+    this.messageService.add(`HeroesComponent: Selected hero id=${hero.id}`);
   }
 
   //original synchronous version
@@ -44,6 +46,6 @@ export class HeroesComponent implements OnInit {
   //new asynchronous version
   getHeroes(): void {
     this.heroService.getHeroes()
-      .subscribe(heroes => this.heroes = heroes);
+      .subscribe(heroes => this.heroes = heroes); // subscribe method passes the emitted array (heroes) to the callback (this.heroes = heroes)
   }
 }
