@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Hero } from '../hero';
-import { HEROES } from '../mock-heroes';
+import { HeroService } from '../hero.service';
 
 @Component({
   selector: 'app-heroes', // css element selector
@@ -10,7 +10,7 @@ import { HEROES } from '../mock-heroes';
 export class HeroesComponent implements OnInit {
 
   //HeroesComponent will be the parent of HeroDetailComponent
-  heroes = HEROES;
+  heroes: Hero[];
 
   hero: Hero = {
     id: 1,
@@ -18,14 +18,25 @@ export class HeroesComponent implements OnInit {
   }
 
   selectedHero: Hero;
+ 
+  /*
+  defines `heroService` as a property, and identifies this as an injection site for `HeroService`
+  Reserve the constructor for simple initialization such as wiring constructor parameters to properties. 
+  The constructor shouldn't do anything.  
+  */
+  constructor(private heroService: HeroService) { }
+
+  // lifecycle hook: called shortly after creating a component. good place for initialization.
+  // will execute body at an appropriate time after the HeroesComponent instance is created
+  ngOnInit(): void { 
+    this.getHeroes();
+  }
 
   onSelect(hero: Hero): void {
     this.selectedHero = hero;
   }
 
-  constructor() { }
-
-  ngOnInit(): void { // lifecycle hook: called shortly after creating a component. good place for initialization.
+  getHeroes(): void {
+    this.heroes = this.heroService.getHeroes();
   }
-
 }
