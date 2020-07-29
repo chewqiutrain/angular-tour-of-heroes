@@ -9,6 +9,7 @@ import { HEROES } from '../mock-heroes';
 })
 export class HeroesComponent implements OnInit {
 
+  //HeroesComponent will be the parent of HeroDetailComponent
   heroes = HEROES;
 
   hero: Hero = {

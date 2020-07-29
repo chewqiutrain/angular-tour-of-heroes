@@ -12,17 +12,14 @@
 <ul class="heroes">
     <!-- ngFor is the repeater directive. it repeats the host element for each element in the list.  -->
     <!-- here, li is the host element. hero holds the current hero object  -->
+    <!-- use class binding to conditionally apply css styles -->
     <li *ngFor="let hero of heroes" (click)="onSelect(hero)" [class.butt]="hero === selectedHero">
         <span class="badge">{{ hero.id }}</span> {{ hero.name }}
     </li>
 </ul>
 
-<div *ngIf="selectedHero">
-    <h2>Selected {{ selectedHero.name | uppercase }} Details </h2>
-    <div><span>id: </span>{{ selectedHero.id }}</div>
-    <div>
-        <label>name: 
-            <input [(ngModel)]="selectedHero.name" placeholder="name"/>
-        </label>
-    </div>
-</div>
+<!-- HerosComponent is the parent of HeroDetailComponent, and will control it by sending a new hero to display whenever -->
+<!-- a user selects a hero from the list. Here we are using property binding -->
+<!-- this is a 1-way data binding from the selectedHero property of HeroesComponent to the target HeroDetailComponent.hero -->
+<app-hero-detail [hero]="selectedHero"></app-hero-detail>
+
