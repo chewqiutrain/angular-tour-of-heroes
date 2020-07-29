@@ -36,7 +36,14 @@ export class HeroesComponent implements OnInit {
     this.selectedHero = hero;
   }
 
-  getHeroes(): void {
+  //original synchronous version
+  /*getHeroes(): void {
     this.heroes = this.heroService.getHeroes();
+  }*/
+
+  //new asynchronous version
+  getHeroes(): void {
+    this.heroService.getHeroes()
+      .subscribe(heroes => this.heroes = heroes);
   }
 }
