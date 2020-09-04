@@ -13,12 +13,7 @@ export class HeroesComponent implements OnInit {
   //HeroesComponent will be the parent of HeroDetailComponent
   heroes: Hero[];
 
-  hero: Hero = {
-    id: 1,
-    name: 'Windstorm'
-  }
-
-  selectedHero: Hero;
+  // selectedHero: Hero;
  
   /*
   defines `heroService` as a property, and identifies this as an injection site for `HeroService`
@@ -33,10 +28,10 @@ export class HeroesComponent implements OnInit {
     this.getHeroes();
   }
 
-  onSelect(hero: Hero): void {
-    this.selectedHero = hero;
-    this.messageService.add(`HeroesComponent: Selected hero id=${hero.id}`);
-  }
+  // onSelect(hero: Hero): void {
+  //   this.selectedHero = hero;
+  //   this.messageService.add(`HeroesComponent: Selected hero id=${hero.id}`);
+  // }
 
   //original synchronous version
   /*getHeroes(): void {
