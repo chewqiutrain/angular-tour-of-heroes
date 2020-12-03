@@ -27,6 +27,10 @@ export class HeroService {
 
   private heroesUrl = 'api/heroes'; // URL to web API 
 
+  httpOptions = {
+    headers: new HttpHeaders({ 'Content-Type': 'application/json' })
+  }
+
   //we implement an async version of getHeroes
   //later, when we use Angular's HttpClient, its methods return Observables.
   // getHeroes(): Observable<Hero[]> { // kinda like IO[A]
@@ -75,6 +79,46 @@ export class HeroService {
     return this.http.get<Hero>(url).pipe(
       tap(_ => this.log(`using HttpClient fetched hero id: ${id}`)),
       catchError(this.handleError<Hero>(`getHero id: ${id}`))
+    );
+  }
+
+
+
+  updateHero(hero: Hero): Observable<any> {
+    return this.http.put(this.heroesUrl, hero, this.httpOptions).pipe(
+      tap(_ => this.log(`updated hero id=${hero.id}`)),
+      catchError(this.handleError<any>('updateHero'))
+    );
+  }
+
+  addHero(hero: Hero): Observable<Hero> {
+    return this.http.post(this.heroesUrl, hero, this.httpOptions).pipe(
+      tap((newHero: Hero) => this.log(`added hero with id = ${newHero.id}`)),
+      catchError(this.handleError<Hero>('addHero'))
+    );
+  }
+
+  deleteHero(hero: Hero | number): Observable<Hero> {
+    const id = typeof hero === 'number' ? hero : hero.id;
+    const url = `${this.heroesUrl}/${id}`;
+
+    return this.http.delete<Hero>(url, this.httpOptions).pipe(
+      tap(_ => this.log(`deleted hero id=${id}`)),
+      catchError(this.handleError<Hero>('deleteHero'))
+    );
+  }
+
+  searchHeroes(term: string): Observable<Hero[]> {
+    if (!term.trim()) {
+      // if empty search term, return empty array
+      return of([]);
+    }
+    
+    return this.http.get<Hero[]>(`${this.heroesUrl}/?name=${term}`).pipe(
+      tap(x => x.length ? 
+        this.log(`found heroes matching term: "${term}"`) : 
+        this.log(`no heroes matching term "${term}"`)),
+      catchError(this.handleError<Hero[]>('searchHeros', []))
     );
   }
 }
